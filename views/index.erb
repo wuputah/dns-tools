@@ -1,0 +1,94 @@
+<!DOCTYPE html> 
+<html lang='en-US' xml:lang='en-US' xmlns='http://www.w3.org/1999/xhtml'> 
+  <head>
+    <title>No Bullshit DNS Tools</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+      body {
+        font-family: Gotham, 'Bitstream Vera Sans', Whitney, Verdana, Arial, sans-serif;
+      }
+      div#form {
+        width: 22em;
+        margin: 0 auto;
+      }
+      h1, h2 {
+        text-align: center;
+      }
+      form, select, input { font-family: monospace; }
+      form { margin-bottom: 0.2em; }
+      div#results {
+        width: 50em;
+        margin: 1em auto 0;
+      }        
+      h2 {
+        margin: 0;
+        text-align: left;
+      }
+      pre {
+        margin: 0;
+        border: 1px solid black;
+        overflow: auto;
+        padding: 1em;
+      }
+      p { margin-top: 2em; text-align: center; }
+      a { color: blue; }
+    </style>
+    <script type="text/javascript">
+      function $(element) { return document.getElementById(element); }
+      function v(element) { return $(element).value; }
+      function go() {
+        var array = new Array();
+        for (var i = 0; i < arguments.length; ++i) {
+          array.push(arguments[i]);
+        }
+        window.location = '/' + array.join('/');
+        return false;
+      }
+    </script>
+  </head>
+  <body>
+    <h1>No Bullshit DNS Tools</h1>
+    <div id="form">
+      <form onsubmit="return go('dig', v('type'), v('dig'))">
+        $ dig
+        <select id="type">
+          <option>a</option>
+          <option>mx</option>
+          <option>ns</option>
+          <option>any</option>
+          <option>txt</option>
+          <option>srv</option>
+          <option>aaaa</option>
+        </select>
+        <input id="dig" />
+        <input type="submit" value="execute" />
+      </form>
+      <form onsubmit="return go('lookup', v('lookup'))">
+        $ nslookup
+        <input id="lookup" />
+        <input type="submit" value="execute" />
+      </form>
+      <form onsubmit="return go('reverse', v('reverse'))">
+        $ dig -x
+        <input id="reverse" />
+        <input type="submit" value="execute" />
+      </form>
+      <form onsubmit="return go('whois', v('whois'))">
+        $ whois
+        <input id="whois" />
+        <input type="submit" value="execute" />
+      </form>
+    </div>
+    <% if defined?(@output) && @output.length > 0 %>
+      <div id="results">
+        <h2>Results</h2>
+        <pre><%= @output %></pre>
+      </div>
+    <% end %>
+    <p>
+      Built by <a href="http://norbauerinc.com">Norbauer</a> &bull;
+      Hosted by <a href="http://heroku.com">Heroku</a> &bull;
+      Code on <a href="http://github.com/norbauer/dns-tools">Github</a>
+    </p>
+  </body>
+</html>
