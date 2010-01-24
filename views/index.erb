@@ -60,22 +60,22 @@
           <option>srv</option>
           <option>aaaa</option>
         </select>
-        <input id="dig" />
+        <input id="dig" value="<%= params[:hostname] !~ IP_REGEXP ? params[:hostname] : nil %>" />
         <input type="submit" value="execute" />
       </form>
       <form onsubmit="return go('lookup', v('lookup'))">
         $ nslookup
-        <input id="lookup" />
+        <input id="lookup" value="<%= params[:hostname] !~ IP_REGEXP ? params[:hostname] : nil %>" />
         <input type="submit" value="execute" />
       </form>
       <form onsubmit="return go('reverse', v('reverse'))">
         $ dig -x
-        <input id="reverse" />
+        <input id="reverse"  value="<%= params[:hostname] =~ IP_REGEXP ? params[:hostname] : nil %>" />
         <input type="submit" value="execute" />
       </form>
       <form onsubmit="return go('whois', v('whois'))">
         $ whois
-        <input id="whois" />
+        <input id="whois" value="<%= params[:hostname] %>" />
         <input type="submit" value="execute" />
       </form>
     </div>

@@ -3,6 +3,8 @@ require 'sinatra'
 require 'escape'
 require 'erb'
 
+IP_REGEXP = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/
+
 def clean_hostname(hn)
   hn.strip.sub(/\s.*/, '')
 end
@@ -26,10 +28,10 @@ get '/dig/:hostname' do
   redirect "/dig/a/#{params[:hostname]}"
 end
 
-get '/reverse/:ip' do
-  raise BadInputError unless params[:ip] =~ /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/
-  @output = "<strong>$ dig -x #{params[:ip]}</strong>\n" +
-            `#{Escape.shell_command(["dig", "-x", params[:ip]])}`.strip
+get '/reverse/:hostname' do
+  raise BadInputError unless params[:hostname] =~ IP_REGEXP
+  @output = "<strong>$ dig -x #{params[:hostname]}</strong>\n" +
+            `#{Escape.shell_command(["dig", "-x", params[:hostname]])}`.strip
   erb :index
 end
 
