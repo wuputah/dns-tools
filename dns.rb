@@ -5,11 +5,17 @@ require 'erb'
 
 IP_REGEXP = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/
 
-def clean_hostname(hn)
-  hn.strip.sub(/\s.*/, '')
+class BadInputError < StandardError; end
+
+helpers do
+  def clean_hostname(hn)
+    hn.strip.sub(/\s.*/, '')
+  end
 end
 
-class BadInputError < StandardError; end
+before do
+  headers 'Cache-Control' => 'public, max-age=60'
+end
 
 get '/' do
   erb :index
