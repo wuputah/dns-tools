@@ -18,6 +18,7 @@ before do
 end
 
 get '/' do
+  headers 'Cache-Control' => 'public, max-age=900'
   erb :index
 end
 
