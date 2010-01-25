@@ -9,7 +9,7 @@ class BadInputError < StandardError; end
 
 helpers do
   def clean_hostname(hn)
-    hn.strip.sub(/\s.*/, '')
+    hn.strip.sub(/[;\s].*/, '')
   end
 end
 
