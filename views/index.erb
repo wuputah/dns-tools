@@ -60,26 +60,26 @@
           <option>srv</option>
           <option>aaaa</option>
         </select>
-        <input id="dig" value="<%= params[:hostname] !~ IP_REGEXP ? params[:hostname] : nil %>" />
+        <input id="dig" value="<%= @hostname && @hostname !~ IP_REGEXP ? @hostname : nil %>" />
         <input type="submit" value="execute" />
       </form>
       <form onsubmit="return go('lookup', v('lookup'))">
         $ nslookup
-        <input id="lookup" value="<%= params[:hostname] !~ IP_REGEXP ? params[:hostname] : nil %>" />
+        <input id="lookup" value="<%= @hostname && @hostname !~ IP_REGEXP ? @hostname : nil %>" />
         <input type="submit" value="execute" />
       </form>
       <form onsubmit="return go('reverse', v('reverse'))">
         $ dig -x
-        <input id="reverse"  value="<%= params[:hostname] =~ IP_REGEXP ? params[:hostname] : nil %>" />
+        <input id="reverse"  value="<%= @hostname && @hostname =~ IP_REGEXP ? @hostname : nil %>" />
         <input type="submit" value="execute" />
       </form>
       <form onsubmit="return go('whois', v('whois'))">
         $ whois
-        <input id="whois" value="<%= params[:hostname] %>" />
+        <input id="whois" value="<%= @hostname %>" />
         <input type="submit" value="execute" />
       </form>
     </div>
-    <% if defined?(@output) && @output.length > 0 %>
+    <% if @output && @output.length > 0 %>
       <div id="results">
         <h2>Results</h2>
         <pre><%= @output %></pre>
