@@ -52,13 +52,9 @@
       <form onsubmit="return go('dig', v('type'), v('dig'))">
         $ dig
         <select id="type">
-          <option>a</option>
-          <option>mx</option>
-          <option>ns</option>
-          <option>any</option>
-          <option>txt</option>
-          <option>srv</option>
-          <option>aaaa</option>
+          <% DNS_TYPES.each do |t| %>
+            <option><%= t %></option>
+          <% end %>
         </select>
         <input id="dig" value="<%= @hostname && @hostname !~ IP_REGEXP ? @hostname : nil %>" />
         <input type="submit" value="execute" />

@@ -3,6 +3,7 @@ require 'sinatra'
 require 'escape'
 require 'erb'
 
+DNS_TYPES = %w[a mx ns any txt srv aaaa]
 IP_REGEXP = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/
 
 class BadInputError < StandardError; end
@@ -31,13 +32,11 @@ get '/' do
   erb :index
 end
 
-['/dig/:type/:hostname', '/dig/:hostname'].each do |path|
-  get path do
-    type = %w[a mx ns any txt srv aaaa].include?(params[:type]) ? params[:type] : 'a'
-    @hostname = clean_hostname(params[:hostname])
-    @output = execute('dig', type, @hostname)
-    erb :index
-  end
+get '/dig/:type/:hostname' do
+  type = DNS_TYPES.include?(params[:type]) ? params[:type] : 'a'
+  @hostname = clean_hostname(params[:hostname])
+  @output = execute('dig', type, @hostname)
+  erb :index
 end
 
 get '/reverse/:hostname' do
@@ -59,8 +58,12 @@ get '/whois/:hostname' do
   erb :index
 end
 
-get '/:hostname' do
-  redirect "/dig/#{params[:hostname]}"
+['/dig/:hostname', '/:hostname'].each do |path|
+  get path do
+    @hostname = clean_hostname(params[:hostname])
+    @output = execute('dig', 'a', @hostname)
+    erb :index
+  end
 end
 
 not_found do
