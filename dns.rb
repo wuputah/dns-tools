@@ -13,6 +13,11 @@ helpers do
     raise BadInputError if hn.length == 0
     hn
   end
+
+  def execute(*args)
+    "<strong>" + args.join(' ') + "</strong>\n" +
+    `#{Escape.shell_command(args)}`.strip
+  end
 end
 
 before do
@@ -30,8 +35,7 @@ end
   get path do
     type = %w[a mx ns any txt srv aaaa].include?(params[:type]) ? params[:type] : 'a'
     @hostname = clean_hostname(params[:hostname])
-    @output = "<strong>$ dig #{type} #{@hostname}</strong>\n" +
-              `#{Escape.shell_command(["dig", type, @hostname])}`.strip
+    @output = execute('dig', type, @hostname)
     erb :index
   end
 end
@@ -39,22 +43,19 @@ end
 get '/reverse/:hostname' do
   raise BadInputError unless params[:hostname] =~ IP_REGEXP
   @hostname = params[:hostname]
-  @output = "<strong>$ dig -x #{@hostname}</strong>\n" +
-            `#{Escape.shell_command(["dig", "-x", @hostname])}`.strip
+  @output = execute('dig', '-x', @hostname)
   erb :index
 end
 
 get '/lookup/:hostname' do
   @hostname = clean_hostname(params[:hostname])
-  @output = "<strong>$ nslookup #{@hostname}</strong>\n" +
-            `#{Escape.shell_command(["nslookup", @hostname])}`.strip
+  @output = execute('nslookup', @hostname)
   erb :index
 end
 
 get '/whois/:hostname' do
   @hostname = clean_hostname(params[:hostname])
-  @output = "<strong>$ whois #{params[:hostname]}</strong>\n" +
-            `#{Escape.shell_command(["whois", @hostname])}`.strip
+  @output = execute('whois', @hostname)
   erb :index
 end
 
