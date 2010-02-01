@@ -22,17 +22,15 @@ get '/' do
   erb :index
 end
 
-get '/dig/:type/:hostname' do
-  type = %w[a mx ns any txt srv aaaa].include?(params[:type]) ? params[:type] : 'a'
-  hostname = clean_hostname(params[:hostname])
-  raise BadInputError if hostname.length == 0
-  @output = "<strong>$ dig #{type} #{hostname}</strong>\n" +
-            `#{Escape.shell_command(["dig", type, hostname])}`.strip
-  erb :index
-end
-
-get '/dig/:hostname' do
-  redirect "/dig/a/#{params[:hostname]}"
+['/dig/:type/:hostname', '/dig/:hostname'].each do |path|
+  get path do
+    type = %w[a mx ns any txt srv aaaa].include?(params[:type]) ? params[:type] : 'a'
+    hostname = clean_hostname(params[:hostname])
+    raise BadInputError if hostname.length == 0
+    @output = "<strong>$ dig #{type} #{hostname}</strong>\n" +
+              `#{Escape.shell_command(["dig", type, hostname])}`.strip
+    erb :index
+  end
 end
 
 get '/reverse/:hostname' do
@@ -56,6 +54,10 @@ get '/whois/:hostname' do
   @output = "<strong>$ whois #{params[:hostname]}</strong>\n" +
             `#{Escape.shell_command(["whois", params[:hostname]])}`.strip
   erb :index
+end
+
+get '/:hostname' do
+  redirect "/dig/#{params[:hostname]}"
 end
 
 not_found do
