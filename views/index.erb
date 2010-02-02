@@ -53,7 +53,11 @@
         $ dig
         <select id="type">
           <% DNS_TYPES.each do |t| %>
-            <option><%= t %></option>
+            <% if @type == t %>
+              <option selected="selected"><%= t %></option>
+            <% else %>
+              <option><%= t %></option>
+            <% end %>
           <% end %>
         </select>
         <input id="dig" value="<%= @hostname && @hostname !~ IP_REGEXP ? @hostname : nil %>" />

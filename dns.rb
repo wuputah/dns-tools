@@ -25,6 +25,7 @@ before do
   headers 'Cache-Control' => 'public, max-age=60'
   @hostname = nil
   @output = nil
+  @type = nil
 end
 
 get '/' do
@@ -33,9 +34,9 @@ get '/' do
 end
 
 get '/dig/:type/:hostname' do
-  type = DNS_TYPES.include?(params[:type]) ? params[:type] : 'a'
+  @type = DNS_TYPES.include?(params[:type]) ? params[:type] : 'a'
   @hostname = clean_hostname(params[:hostname])
-  @output = execute('dig', type, @hostname)
+  @output = execute('dig', @type, @hostname)
   erb :index
 end
 
