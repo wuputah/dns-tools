@@ -16,7 +16,7 @@ helpers do
   end
 
   def execute(*args)
-    "<strong>" + args.join(' ') + "</strong>\n" +
+    "<strong>% " + args.join(' ') + "</strong>\n" +
     `#{Escape.shell_command(args)}`.strip
   end
 end
