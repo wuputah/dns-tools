@@ -11,8 +11,12 @@
         width: 23em;
         margin: 0 auto;
       }
-      h1, h2 {
+      h1 {
         text-align: center;
+      }
+      h1.explicit {
+        position: absolute;
+        text-indent: -999em;
       }
       form, select, input, pre { font-family: 'Bitstream Vera Sans Mono', Monaco, 'Andale Mono', Courier, 'Courier New', monospace; }
       form { margin-bottom: 0.2em; }
@@ -48,6 +52,7 @@
   </head>
   <body>
     <h1>No Bull DNS Tools</h1>
+    <h1 class="explicit">No Bullshit DNS Tools</h1>
     <div id="form">
       <form onsubmit="return go('dig', v('type'), v('dig'))">
         $ dig
