@@ -16,7 +16,8 @@ helpers do
   end
 
   def execute(*args)
-    "<strong>% " + args.join(' ') + "</strong>\n" +
+    options = Hash === args.last ? args.pop : {}
+    "<strong>% " + (options[:display] || args).join(' ') + "</strong>\n" +
     `#{Escape.shell_command(args)}`.strip
   end
 end
@@ -56,6 +57,12 @@ end
 get '/whois/:hostname' do
   @hostname = clean_hostname(params[:hostname])
   @output = execute('whois', @hostname)
+  erb :index
+end
+
+get '/headers/*' do
+  @hostname = clean_hostname(params[:splat].join)
+  @output = execute('curl', '-ISs', 'http://' + @hostname, :display => ['curl', '-I', 'http://' + @hostname])
   erb :index
 end
 

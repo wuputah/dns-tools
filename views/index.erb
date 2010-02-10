@@ -6,11 +6,13 @@
     <style type="text/css">
       body {
         font-family: Gotham, 'Bitstream Vera Sans', Whitney, Verdana, Arial, sans-serif;
+        font-size: 14px;
       }
       div#form {
-        width: 23em;
+        width: 32em;
         margin: 0 auto;
       }
+      div#form input[type="text"] { width: 20em; }
       h1 {
         text-align: center;
       }
@@ -65,22 +67,27 @@
             <% end %>
           <% end %>
         </select>
-        <input id="dig" value="<%= @hostname && @hostname !~ IP_REGEXP ? @hostname : nil %>" />
+        <input id="dig" type="text" value="<%= @hostname && @hostname !~ IP_REGEXP ? @hostname : nil %>" />
         <input type="submit" value="execute" />
       </form>
       <form onsubmit="return go('lookup', v('lookup'))">
-        $ nslookup
-        <input id="lookup" value="<%= @hostname && @hostname !~ IP_REGEXP ? @hostname : nil %>" />
+        <label for="lookup">$ nslookup</label>
+        <input id="lookup" type="text" value="<%= @hostname && @hostname !~ IP_REGEXP ? @hostname : nil %>" />
         <input type="submit" value="execute" />
       </form>
       <form onsubmit="return go('reverse', v('reverse'))">
-        $ dig -x
-        <input id="reverse"  value="<%= @hostname && @hostname =~ IP_REGEXP ? @hostname : nil %>" />
+        <label for="reverse">$ dig -x</label>
+        <input id="reverse" type="text" value="<%= @hostname && @hostname =~ IP_REGEXP ? @hostname : nil %>" />
         <input type="submit" value="execute" />
       </form>
       <form onsubmit="return go('whois', v('whois'))">
-        $ whois
-        <input id="whois" value="<%= @hostname %>" />
+        <label for="whois">$ whois</label>
+        <input id="whois" type="text" value="<%= @hostname %>" />
+        <input type="submit" value="execute" />
+      </form>
+      <form onsubmit="return go('headers', v('headers'))">
+        <label for="headers">$ curl -I http://</label>
+        <input id="headers" type="text" value="<%= @hostname %>" />
         <input type="submit" value="execute" />
       </form>
     </div>
