@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'sinatra'
 require 'escape'
 require 'erb'
