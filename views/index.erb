@@ -1,5 +1,5 @@
-<!DOCTYPE html> 
-<html lang='en-US' xml:lang='en-US' xmlns='http://www.w3.org/1999/xhtml'> 
+<!DOCTYPE html>
+<html lang='en-US' xml:lang='en-US' xmlns='http://www.w3.org/1999/xhtml'>
   <head>
     <title>No Bull DNS Tools</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -25,7 +25,7 @@
       div#results {
         width: 50em;
         margin: 1em auto 0;
-      }        
+      }
       h2 {
         margin: 0;
         text-align: left;
@@ -95,6 +95,9 @@
       <div id="results">
         <h2>Results</h2>
         <pre><%= @output %></pre>
+        <% if request.path_info =~ %r(^/headers/) %>
+          <p>Need more curl power? <a href="http://hurl.it/">Try hurl</a>.</p>
+        <% end %>
       </div>
     <% end %>
     <p>
