@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'escape'
 require 'erb'
+require 'whois'
 
 DNS_TYPES = %w[a mx ns any txt srv aaaa]
 IP_REGEXP = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/
@@ -55,7 +56,7 @@ end
 
 get '/whois/:hostname' do
   @hostname = clean_hostname(params[:hostname])
-  @output = execute('whois', @hostname)
+  @output = Whois.lookup(@hostname).to_s
   erb :index
 end
 
